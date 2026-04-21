@@ -1,0 +1,22 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const TestApp());
+}
+
+class TestApp extends StatelessWidget {
+  const TestApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Test',
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Shop Manager')),
+        body: const Center(
+          child: Text('App Works!'),
+        ),
+      ),
+    );
+  }
+}
