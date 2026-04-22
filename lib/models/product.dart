@@ -38,16 +38,21 @@ class Product {
     return Product(
       id: map['id'] as String,
       name: map['name'] as String,
-      buyingPrice: map['buyingPrice'] is int
-          ? (map['buyingPrice'] as int).toDouble()
-          : map['buyingPrice'] as double,
-      sellingPrice: map['sellingPrice'] is int
-          ? (map['sellingPrice'] as int).toDouble()
-          : map['sellingPrice'] as double,
+      buyingPrice: _parseDouble(map['buyingPrice'] ?? map['buying_price']),
+      sellingPrice: _parseDouble(map['sellingPrice'] ?? map['selling_price']),
       quantity: map['quantity'] as int,
-      lowStockThreshold: map['lowStockThreshold'] as int,
+      lowStockThreshold:
+          map['lowStockThreshold'] ?? map['low_stock_threshold'] as int,
       category: map['category'] as String? ?? 'General',
-      isDeleted: (map['isDeleted'] as int? ?? 0) == 1,
+      isDeleted:
+          (map['isDeleted'] as int? ?? map['is_deleted'] as int? ?? 0) == 1,
     );
+  }
+
+  static double _parseDouble(dynamic value) {
+    if (value is int) {
+      return value.toDouble();
+    }
+    return value as double;
   }
 }
