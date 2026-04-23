@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/product.dart';
@@ -34,34 +35,61 @@ class BackendService implements ShopService {
         request.body = body;
       }
 
+      // Log outgoing request
+      debugPrint('📤 $method $uri');
+      if (body != null) {
+        debugPrint('   Body: $body');
+      }
+
       final streamedResponse = await client.send(request).timeout(
-        Duration(seconds: httpTimeoutSeconds),
-      );
+            Duration(seconds: httpTimeoutSeconds),
+          );
 
       final response = await http.Response.fromStream(streamedResponse);
 
+      // Log response
+      debugPrint('📥 Response Status: ${response.statusCode}');
+      debugPrint('   Body: ${response.body}');
+
       // Check for successful status codes
       if (response.statusCode >= 200 && response.statusCode < 300) {
+        debugPrint('✅ Success');
         return response;
       } else {
+        // Parse error message if available
+        String errorMessage = response.reasonPhrase ?? 'Unknown error';
+        try {
+          final errorBody = jsonDecode(response.body) as Map<String, dynamic>;
+          errorMessage = errorBody['detail'] ?? errorMessage;
+        } catch (_) {
+          // Use response body if JSON parsing fails
+          errorMessage =
+              response.body.isNotEmpty ? response.body : errorMessage;
+        }
+
+        debugPrint('❌ Error: $errorMessage');
+
         throw HttpException(
-          'HTTP ${response.statusCode}: ${response.reasonPhrase}\n'
+          'HTTP ${response.statusCode}: $errorMessage\n'
           'URL: $uri\n'
-          'Response: ${response.body}',
+          'Method: $method',
         );
       }
     } on SocketException catch (e) {
+      debugPrint('❌ Network Error: $e');
       throw Exception('Network error: Unable to connect to backend\n'
           'URL: $uri\n'
           'Please check your internet connection and backend availability.\n'
           'Error: $e');
     } on TimeoutException catch (e) {
+      debugPrint('❌ Timeout Error: $e');
       throw Exception('Request timeout: Backend took too long to respond\n'
           'URL: $uri\n'
           'Timeout: ${httpTimeoutSeconds}s\n'
           'This may be due to cold start on free tier hosting.\n'
           'Error: $e');
     } catch (e) {
+      debugPrint('❌ Unexpected Error: $e');
       throw Exception('Unexpected error during HTTP request\n'
           'URL: $uri\n'
           'Error: $e');
@@ -96,12 +124,21 @@ class BackendService implements ShopService {
 
   @override
   Future<void> addProduct(Product product) async {
-    await _makeRequest(
-      'POST',
-      '/products',
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(product.toMap()),
-    );
+    debugPrint('📦 Adding product: ${product.id}');
+    try {
+      final body = jsonEncode(product.toMap());
+      debugPrint('   Sending: $body');
+      await _makeRequest(
+        'POST',
+        '/products',
+        headers: {'Content-Type': 'application/json'},
+        body: body,
+      );
+      debugPrint('✅ Product added successfully');
+    } catch (e) {
+      debugPrint('❌ Failed to add product: $e');
+      rethrow;
+    }
   }
 
   @override

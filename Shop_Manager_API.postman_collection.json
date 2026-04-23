@@ -1,0 +1,146 @@
+{
+  "info": {
+    "name": "Shop Manager API",
+    "description": "API collection for debugging Shop Manager backend",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "GET All Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://shop-manager-backend-xe9d.onrender.com/products",
+              "protocol": "https",
+              "host": ["shop-manager-backend-xe9d", "onrender", "com"],
+              "path": ["products"]
+            }
+          }
+        },
+        {
+          "name": "POST Add Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"PROD-001\",\n  \"name\": \"Widget\",\n  \"buyingPrice\": 10.0,\n  \"sellingPrice\": 20.0,\n  \"quantity\": 50,\n  \"lowStockThreshold\": 5,\n  \"category\": \"General\"\n}"
+            },
+            "url": {
+              "raw": "https://shop-manager-backend-xe9d.onrender.com/products",
+              "protocol": "https",
+              "host": ["shop-manager-backend-xe9d", "onrender", "com"],
+              "path": ["products"]
+            }
+          }
+        },
+        {
+          "name": "POST Add Product (with isDeleted)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"PROD-002\",\n  \"name\": \"Gadget\",\n  \"buyingPrice\": 25.0,\n  \"sellingPrice\": 45.0,\n  \"quantity\": 30,\n  \"lowStockThreshold\": 5,\n  \"category\": \"Electronics\",\n  \"isDeleted\": 0\n}"
+            },
+            "url": {
+              "raw": "https://shop-manager-backend-xe9d.onrender.com/products",
+              "protocol": "https",
+              "host": ["shop-manager-backend-xe9d", "onrender", "com"],
+              "path": ["products"]
+            }
+          }
+        },
+        {
+          "name": "PUT Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"PROD-001\",\n  \"name\": \"Widget Updated\",\n  \"buyingPrice\": 11.0,\n  \"sellingPrice\": 22.0,\n  \"quantity\": 45,\n  \"lowStockThreshold\": 5,\n  \"category\": \"General\"\n}"
+            },
+            "url": {
+              "raw": "https://shop-manager-backend-xe9d.onrender.com/products/PROD-001",
+              "protocol": "https",
+              "host": ["shop-manager-backend-xe9d", "onrender", "com"],
+              "path": ["products", "PROD-001"]
+            }
+          }
+        },
+        {
+          "name": "DELETE Product",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "https://shop-manager-backend-xe9d.onrender.com/products/PROD-001",
+              "protocol": "https",
+              "host": ["shop-manager-backend-xe9d", "onrender", "com"],
+              "path": ["products", "PROD-001"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sales",
+      "item": [
+        {
+          "name": "GET All Sales",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://shop-manager-backend-xe9d.onrender.com/sales",
+              "protocol": "https",
+              "host": ["shop-manager-backend-xe9d", "onrender", "com"],
+              "path": ["sales"]
+            }
+          }
+        },
+        {
+          "name": "POST Record Sale",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"PROD-001\",\n  \"date\": 1713916800000,\n  \"quantity\": 5\n}"
+            },
+            "url": {
+              "raw": "https://shop-manager-backend-xe9d.onrender.com/sales",
+              "protocol": "https",
+              "host": ["shop-manager-backend-xe9d", "onrender", "com"],
+              "path": ["sales"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
