@@ -19,7 +19,7 @@ class Sale {
 
   factory Sale.fromMap(Map<String, dynamic> map) {
     return Sale(
-      productId: map['productId'] as String,
+      productId: map['productId'] as String? ?? map['product_id'] as String,
       date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
       quantity: map['quantity'] as int,
     );
